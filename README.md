@@ -1,34 +1,41 @@
-MWGNet-MDC-YOLOv11
+[README.md](https://github.com/user-attachments/files/31450917/README.md)
+# MWGNet-MDC-YOLOv11
 
 Official repository for:
 
-MWGNet-MDC-YOLOv11: A Cascaded Framework for Super-Resolution Reconstruction and Multiple Insulator Defect Detection
+**MWGNet-MDC-YOLOv11: A Cascaded Framework for Super-Resolution Reconstruction and Multiple Insulator Defect Detection**
 
-This repository provides the public materials used to support the reproducibility and independent evaluation of our study, including the held-out test set, complete test annotations, dataset configuration, super-resolution training configuration, and detector evaluation script.
+This repository provides public materials for reproducible evaluation of the proposed framework, including the held-out test set, complete test annotations, dataset configuration, the exact test-set manifest, the super-resolution training configuration, and the detector evaluation script.
 
-1. Overview
+---
+
+## 1. Overview
 
 Low-resolution UAV inspection images may suffer from loss of fine structural details, which can reduce the accuracy of insulator defect detection. To address this problem, we propose a cascaded framework consisting of:
 
-MWGNet for ×4 super-resolution reconstruction;
+- **MWGNet** for ×4 super-resolution reconstruction;
+- **MDC-YOLOv11** for four-class insulator defect detection.
 
-MDC-YOLOv11 for four-class insulator defect detection.
+The four dataset labels are:
 
-The four defect categories used in the dataset labels are:
-
+```yaml
 nc: 4
 names:
   0: flashover
   1: loose
   2: damaged
   3: dirty
+```
 
-For consistency with the terminology used in the manuscript, these four labels are referred to as flashover, loosening, damage, and contamination, respectively.
+For consistency with the terminology used in the manuscript, these labels are referred to as **flashover, loosening, damage, and contamination**, respectively.
 
-2. Processing Pipeline
+---
+
+## 2. Processing Pipeline
 
 The controlled experimental pipeline used in this study is:
 
+```text
 Original HR insulator image
         ↓
 Bicubic ×4 downsampling
@@ -42,139 +49,137 @@ Reconstructed SR image
 MDC-YOLOv11
         ↓
 Four-class defect detection
+```
 
-In the current study, paired naturally degraded LR-HR UAV images were not available. Therefore, the LR images used in the controlled experiments were synthetically generated from the original HR images using ×4 degradation.
+In this study, paired naturally degraded LR-HR UAV images were not available. Therefore, the LR images used in the controlled experiments were synthetically generated from the original HR images using ×4 degradation.
 
 MWGNet was first trained using paired LR-HR images. After convergence, the trained MWGNet was fixed and used to reconstruct the LR defect images. The resulting SR images, together with the corresponding original bounding-box annotations, were then used to train MDC-YOLOv11.
 
-Therefore, MWGNet and MDC-YOLOv11 were trained sequentially without end-to-end joint optimization.
+Therefore, MWGNet and MDC-YOLOv11 were trained **sequentially without end-to-end joint optimization**.
 
-3. Dataset
+---
+
+## 3. Dataset
 
 The self-constructed UAV insulator defect dataset contains:
 
-Split
+| Split | Number of images |
+|---|---:|
+| Training | 2,987 |
+| Validation | 417 |
+| Test | 402 |
+| **Total** | **3,806** |
 
-Number of images
+The complete dataset contains **6,461 annotated defect instances** covering four defect categories.
 
-Training
+### Dataset label mapping
 
-2,987
+| Class ID | Dataset label | Manuscript terminology |
+|---:|---|---|
+| 0 | flashover | flashover |
+| 1 | loose | loosening |
+| 2 | damaged | damage |
+| 3 | dirty | contamination |
 
-Validation
+All bounding-box annotations are stored in **YOLO format**.
 
-417
+---
 
-Test
+## 4. Data Availability
 
-402
+Due to **data-ownership, copyright, and power-grid information confidentiality restrictions** associated with part of the UAV inspection imagery, the complete training and validation subsets cannot be publicly distributed.
 
-Total
-
-3,806
-
-The complete dataset contains 6,461 annotated defect instances covering four defect categories.
-
-Dataset label mapping
-
-Class ID
-
-Dataset label
-
-Manuscript terminology
-
-0
-
-flashover
-
-flashover
-
-1
-
-loose
-
-loosening
-
-2
-
-damaged
-
-damage
-
-3
-
-dirty
-
-contamination
-
-All bounding-box annotations are stored in YOLO format.
-
-4. Data Availability
-
-Due to data-ownership, copyright, and power-grid information confidentiality restrictions associated with part of the UAV inspection imagery, the complete training and validation subsets cannot be publicly distributed.
-
-Following internal discussion and review by our research group, the complete held-out test subset used in this study has been approved for public release.
+Following internal review by the research group, the complete held-out test subset used in this study has been approved for public release.
 
 The publicly released test subset contains:
 
-402 test images;
+- **402 test images**;
+- **690 annotated defect instances**;
+- complete YOLO-format bounding-box annotations;
+- a public dataset configuration file;
+- an exact manifest listing all 402 test images.
 
-690 annotated defect instances;
+The released test subset is intended to support independent evaluation and verification of the results reported in the manuscript.
 
-complete YOLO-format bounding-box annotations;
+The complete public test package is available from the GitHub Releases section:
 
-the dataset configuration file (data_test.yaml);
+**Release:** `v1.0-testset`  
+**Asset:** `InsulatorDefect_TestSet_v1.0.zip`
 
-the exact list of test images (test.txt).
+https://github.com/bjyx-xz/MWGNet-MDC-YOLOv11/releases/tag/v1.0-testset
 
-The released test set is intended to support independent evaluation and verification of the results reported in the manuscript.
+A detailed explanation of the data-release restrictions is also provided in:
 
-The complete public test package can be downloaded from the Releases section of this repository:
+```text
+DATA_AVAILABILITY.md
+```
 
-Release asset: InsulatorDefect_TestSet_v1.0.zip
+---
 
-GitHub Releases:
-https://github.com/bjyx-xz/MWGNet-MDC-YOLOv11/releases
+## 5. Public Test Package
 
-For a more detailed explanation of the data-release restrictions, please see DATA_AVAILABILITY.md.
+After downloading and extracting `InsulatorDefect_TestSet_v1.0.zip`, the package contains:
 
-5. Public Test Set Structure
-
-After downloading and extracting InsulatorDefect_TestSet_v1.0.zip, the test set is organized as follows:
-
+```text
 InsulatorDefect_TestSet_v1.0/
 │
 ├── images/
 │   └── test/
-│       ├── image_001.jpg
-│       ├── image_002.jpg
-│       └── ...
+│       ├── ...
+│       └── 402 test images
 │
 ├── labels/
 │   └── test/
-│       ├── image_001.txt
-│       ├── image_002.txt
-│       └── ...
+│       ├── ...
+│       └── corresponding YOLO labels
 │
-├── test.txt
 └── data_test.yaml
+```
 
-Each image in images/test/ has a corresponding YOLO-format annotation file in labels/test/.
+Each image in `images/test/` has a corresponding annotation file in `labels/test/`.
 
-The annotation format is:
+The YOLO annotation format is:
 
+```text
 class_id x_center y_center width height
+```
 
-where all bounding-box coordinates are normalized to the range [0, 1].
+where the bounding-box coordinates are normalized to the range `[0, 1]`.
 
-6. Dataset Configuration
+---
 
-The public test-set configuration is provided in data_test.yaml.
+## 6. Exact Test-Set Manifest
 
-Example:
+The exact list of the 402 held-out test images is provided separately in the GitHub repository:
 
+```text
+dataset/test.txt
+```
+
+The entries follow the form:
+
+```text
+./images/test/example_001.jpg
+./images/test/example_002.jpg
+./images/test/example_003.jpg
+```
+
+`test.txt` is provided to make the publicly released test split explicit and reproducible.
+
+**Important:** `test.txt` is stored in the GitHub repository and is not required to be inside the Release ZIP package.
+
+---
+
+## 7. Dataset Configuration
+
+Two equivalent usage scenarios are supported.
+
+### 7.1 Configuration inside the extracted Release package
+
+When `data_test.yaml` is placed in the root of the extracted test package, the recommended configuration is:
+
+```yaml
 path: .
-
 test: images/test
 
 nc: 4
@@ -184,25 +189,52 @@ names:
   1: loose
   2: damaged
   3: dirty
+```
 
-If the extracted dataset is moved to another directory, update the dataset path accordingly.
+This configuration assumes the following structure:
 
-7. Test-Set Manifest
+```text
+InsulatorDefect_TestSet_v1.0/
+├── images/test/
+├── labels/test/
+└── data_test.yaml
+```
 
-The file test.txt lists the exact 402 images included in the held-out test subset.
+### 7.2 Configuration stored in this GitHub repository
 
-Example:
+The repository also provides:
 
-./images/test/example_001.jpg
-./images/test/example_002.jpg
-./images/test/example_003.jpg
+```text
+dataset/data_test.yaml
+```
 
-The purpose of this file is to make the test split explicit and reproducible.
+Its path is configured assuming that `InsulatorDefect_TestSet_v1.0` has been extracted into the repository root:
 
-8. Repository Contents
+```text
+MWGNet-MDC-YOLOv11/
+├── dataset/
+│   └── data_test.yaml
+└── InsulatorDefect_TestSet_v1.0/
+    ├── images/test/
+    └── labels/test/
+```
 
-The repository currently provides the following public materials:
+Accordingly, the repository configuration uses:
 
+```yaml
+path: ../InsulatorDefect_TestSet_v1.0
+test: images/test
+```
+
+If the dataset is extracted elsewhere, users should update the `path` field accordingly.
+
+---
+
+## 8. Repository Contents
+
+The current public repository contains:
+
+```text
 MWGNet-MDC-YOLOv11/
 │
 ├── README.md
@@ -213,158 +245,168 @@ MWGNet-MDC-YOLOv11/
 └── dataset/
     ├── data_test.yaml
     └── test.txt
+```
 
-The complete 402-image public test set and its annotations are distributed separately through the GitHub Releases section because of file-size limitations.
+The complete 402-image test set and its corresponding labels are distributed through the GitHub Release because of file-size limitations.
 
-9. Super-Resolution Training Configuration
+---
+
+## 9. Super-Resolution Training Configuration
 
 The file:
 
+```text
 train_MambaIRv2_SR_x4.yml
+```
 
-contains the main training configuration used for the ×4 super-resolution reconstruction experiments.
+contains the main training configuration used for the ×4 super-resolution experiments.
 
-The main settings include:
+The principal settings are:
 
-scale factor: ×4;
+- scale factor: ×4;
+- training patch size: 192 × 192;
+- batch size: 6;
+- total iterations: 250,000;
+- optimizer: Adam;
+- initial learning rate: 1 × 10⁻⁴;
+- Adam betas: (0.9, 0.99);
+- pixel loss: L1 loss;
+- random seed: 10.
 
-training patch size: 192 × 192;
+The training and validation images are not publicly distributed. Therefore, users attempting to reproduce training with authorized data must replace the local dataset paths in the configuration file with their own accessible dataset paths.
 
-batch size: 6;
+---
 
-total iterations: 250,000;
+## 10. Detector Evaluation
 
-optimizer: Adam;
+The repository provides:
 
-initial learning rate: 1 × 10⁻⁴;
+```text
+val.py
+```
 
-Adam betas: (0.9, 0.99);
-
-pixel loss: L1 loss;
-
-random seed: 10.
-
-Because the training and validation images are restricted, the local dataset paths in the configuration file must be replaced with authorized local paths before training.
-
-10. Detector Evaluation
-
-The repository provides val.py for evaluating a trained YOLO-based detector.
+for evaluating a trained YOLO-based detector.
 
 The detector input resolution used in the study is:
 
+```text
 640 × 640
+```
 
 The detection task contains four classes:
 
+```text
 0 - flashover
 1 - loose
 2 - damaged
 3 - dirty
+```
 
-Before running the evaluation script, users should replace local model-weight and dataset paths with their own paths or modify the script to accept command-line arguments.
+The current public script contains local path examples corresponding to the authors' experimental environment. Users should replace the model-weight path and dataset path with their own local paths before evaluation.
 
-The public test subset can be used for independent detector evaluation with the released annotations.
+Future repository updates may further convert these path settings to command-line arguments for easier reuse.
 
-11. Experimental Data Flow
+---
 
-For the cascaded MWGNet-MDC-YOLOv11 experiments, the data flow is summarized below.
+## 11. Experimental Data Flow
 
-Stage 1: LR generation
+For the cascaded MWGNet-MDC-YOLOv11 experiments, the data flow is:
 
-The original HR image is degraded using ×4 downsampling to generate the corresponding LR image.
+### Stage 1: LR generation
 
+```text
 HR → ×4 degradation → LR
+```
 
-Stage 2: Super-resolution reconstruction
+### Stage 2: Super-resolution reconstruction
 
-The LR image is reconstructed using MWGNet.
-
+```text
 LR → MWGNet → SR
+```
 
-Stage 3: Defect detection
+### Stage 3: Defect detection
 
-The reconstructed SR image is used as the input to MDC-YOLOv11.
-
+```text
 SR → MDC-YOLOv11 → defect predictions
+```
 
-For detector training, the reconstructed SR training images are paired with the corresponding original bounding-box annotations.
+For detector training, the reconstructed SR training images were paired with the corresponding original bounding-box annotations.
 
-12. Evaluation Metrics
+---
 
-Super-resolution reconstruction
+## 12. Evaluation Metrics
 
-The reconstruction performance is evaluated using:
+### Super-resolution reconstruction
 
-Peak Signal-to-Noise Ratio (PSNR);
+Reconstruction performance is evaluated using:
 
-Structural Similarity Index Measure (SSIM);
+- Peak Signal-to-Noise Ratio (**PSNR**);
+- Structural Similarity Index Measure (**SSIM**);
+- Learned Perceptual Image Patch Similarity (**LPIPS**).
 
-Learned Perceptual Image Patch Similarity (LPIPS).
+### Defect detection
 
-Defect detection
+Detection performance is evaluated using:
 
-The detection performance is evaluated using:
+- Precision;
+- Recall;
+- F1-score;
+- mAP@50;
+- mAP@50:95.
 
-Precision;
+---
 
-Recall;
+## 13. Reproducibility Scope
 
-F1-score;
+This repository supports **evaluation reproducibility** by providing:
 
-mAP@50;
+- the complete 402-image held-out test subset;
+- all corresponding test annotations;
+- the four-class label definition;
+- the exact test-set manifest;
+- the dataset configuration;
+- the main MWGNet training configuration;
+- the detector evaluation script;
+- a description of the reconstruction-then-detection pipeline.
 
-mAP@50:95.
+Because the training and validation images cannot be redistributed under the current data-use restrictions, the repository does **not** provide complete training-data reproducibility for the self-constructed dataset.
 
-The same held-out test subset is used for controlled comparisons among the relevant input conditions.
+---
 
-13. Reproducibility Notes
+## 14. Scope and Limitation of the Current Study
 
-To support independent verification of the reported evaluation results, this repository provides or publicly releases:
-
-the complete 402-image held-out test subset;
-
-all corresponding test annotations;
-
-the four-class label definition;
-
-the exact test-set manifest;
-
-the dataset configuration;
-
-the main MWGNet training configuration;
-
-the detector evaluation script;
-
-the description of the reconstruction-then-detection pipeline.
-
-Because the training and validation images cannot be redistributed under the current data-use restrictions, this repository supports evaluation reproducibility rather than complete reproduction of model training from the original private dataset.
-
-14. Scope and Limitation of the Released Data
-
-The LR images used in the main controlled experiments were synthetically generated from the original HR images. Additional synthetic degradation conditions were also used in the manuscript to evaluate robustness.
+The LR images used in the main controlled experiments were synthetically generated from the original HR images. Additional synthetic degradation conditions were also used in the manuscript for robustness evaluation.
 
 These synthetic degradation experiments should not be interpreted as a substitute for validation on genuinely degraded UAV imagery.
 
 The absence of a sufficiently large annotated dataset of naturally degraded UAV insulator images is an acknowledged limitation of the present study. Future work will focus on evaluation using independently acquired and naturally degraded UAV inspection data.
 
-15. Citation
+---
+
+## 15. Citation
 
 If this repository or the released test set is useful for your research, please cite the corresponding paper after publication.
 
+```bibtex
 @article{MWGNetMDCYOLOv11,
   title   = {MWGNet-MDC-YOLOv11: A Cascaded Framework for Super-Resolution Reconstruction and Multiple Insulator Defect Detection},
   author  = {To be updated},
   journal = {To be updated},
   year    = {2026}
 }
+```
 
 The citation information will be updated after the paper is formally published.
 
-16. Acknowledgements
+---
+
+## 16. Acknowledgements
 
 This project was developed using PyTorch, Ultralytics YOLO, and related open-source image-restoration frameworks. We sincerely thank the developers and maintainers of these open-source projects.
 
-17. License and Usage
+---
+
+## 17. License and Usage
 
 The publicly released materials are intended for academic research and reproducibility purposes.
 
@@ -372,6 +414,8 @@ Users must comply with the applicable licenses of third-party code and dependenc
 
 The unreleased training and validation UAV imagery remains subject to the original data-ownership, copyright, and power-grid information confidentiality restrictions and may not be redistributed.
 
-18. Contact
+---
 
-For questions related to the repository, dataset evaluation, or the paper, please contact the corresponding author through the contact information provided in the manuscript.
+## 18. Contact
+
+For questions related to the repository, dataset evaluation, or the paper, please contact the corresponding author using the contact information provided in the manuscript.
