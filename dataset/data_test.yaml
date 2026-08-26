@@ -1,0 +1,13 @@
+# Public held-out test set for MWGNet-MDC-YOLOv11
+
+path: ../InsulatorDefect_TestSet_v1.0
+
+test: images/test
+
+nc: 4
+
+names:
+  0: flashover
+  1: loose
+  2: damaged
+  3: dirty
