@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/31450917/README.md)
 # MWGNet-MDC-YOLOv11
 
 Official repository for:
