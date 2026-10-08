@@ -226,6 +226,8 @@ Recommended layout:
 MWGNet-MDC-YOLOv11/
 │
 ├── dataset/
+│   ├── README.md
+│   ├── DOWNLOAD_LINK.txt
 │   ├── data_test.yaml
 │   └── test.txt
 │
