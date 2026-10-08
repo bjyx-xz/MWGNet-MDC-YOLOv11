@@ -162,6 +162,8 @@ MWGNet-MDC-YOLOv11/
 ├── val.py
 │
 ├── dataset/
+│   ├── README.md
+│   ├── DOWNLOAD_LINK.txt
 │   ├── data_test.yaml
 │   └── test.txt
 │
