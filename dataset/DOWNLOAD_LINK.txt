@@ -1,0 +1,44 @@
+UAV Insulator Defect Test Dataset Download
+
+The complete held-out test dataset can be downloaded from:
+
+GitHub Release:
+https://github.com/bjyx-xz/MWGNet-MDC-YOLOv11/releases/tag/v1.0-testset
+
+
+Dataset package:
+
+InsulatorDefect_TestSet_v1.0.zip
+
+
+Contents:
+
+- 402 test images
+- 690 bounding-box annotations
+- YOLO-format labels
+- Dataset configuration file
+
+
+After downloading, extract the package to the repository root:
+
+MWGNet-MDC-YOLOv11/
+
+Recommended structure:
+
+MWGNet-MDC-YOLOv11/
+
+├── dataset/
+│   ├── README.md
+│   ├── DOWNLOAD_LINK.txt
+│   ├── data_test.yaml
+│   └── test.txt
+│
+└── InsulatorDefect_TestSet_v1.0/
+    ├── images/
+    │   └── test/
+    ├── labels/
+    │   └── test/
+    └── data_test.yaml
+
+
+For detailed usage instructions, please refer to the main README.md.
