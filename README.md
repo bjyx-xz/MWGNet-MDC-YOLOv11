@@ -206,7 +206,7 @@ The bicubic degradation script also uses **Pillow**. If Pillow is not already in
 pip install Pillow
 ```
 
-> For strict reproducibility, users should use package versions compatible with the released model weights and the experimental environment.
+> For consistent evaluation, users should use package versions compatible with the released model weights and the experimental environment.
 
 ---
 
